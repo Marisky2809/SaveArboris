@@ -8,7 +8,7 @@ public class Movimiento : MonoBehaviour
     public Tomarcosas tomar;
     public Piedra piedra;
     public Vidas vidas;
-
+    
     public bool posibleAtaque = true;
 
     public bool Tomando = false;
@@ -28,17 +28,25 @@ public class Movimiento : MonoBehaviour
     public bool triangulo = false;
 
 
-    public AudioSource audio;
+    public AudioSource audios;
     public AudioClip GolpeAire;
+    public AudioClip pisadas;
+    public AudioClip soltar;
+    public AudioClip sostener;
+
+    private float tiempoAcumulado = 0f;
+    public float tiempoEspera = 0.1f;
+
     void Start()
     {
         animator = GetComponent<Animator>();
         RamaGolpeadora.SetActive(false);
-        audio = GetComponent<AudioSource>();
+        audios = GetComponent<AudioSource>();
     }
 
     void Update()
     {
+        tiempoAcumulado += Time.deltaTime;
 
         centro.transform.position = Bavi.transform.position + Vector3.down * .3f;
 
@@ -61,6 +69,12 @@ public class Movimiento : MonoBehaviour
             referencia.transform.position = centro.transform.position + Vector3.up * .5f;
             mira.transform.position = centro.transform.position + Vector3.up * 1f;
             tomar.acercar = false;
+
+            if (tiempoAcumulado >= tiempoEspera)
+            {
+                audios.PlayOneShot(pisadas);
+                tiempoAcumulado = 0f;
+            }
         }
         else if (Input.GetKey(KeyCode.A) || (Gamepad.current != null && Gamepad.current.leftStick.left.isPressed))
         {
@@ -81,6 +95,12 @@ public class Movimiento : MonoBehaviour
             referencia.transform.position = centro.transform.position + Vector3.left * .5f;
             mira.transform.position = centro.transform.position + Vector3.left * 1f;
             tomar.acercar = false;
+
+            if (tiempoAcumulado >= tiempoEspera)
+            {
+                audios.PlayOneShot(pisadas);
+                tiempoAcumulado = 0f;
+            }
         }
         else if (Input.GetKey(KeyCode.S) || (Gamepad.current != null && Gamepad.current.leftStick.down.isPressed))
         {
@@ -102,6 +122,12 @@ public class Movimiento : MonoBehaviour
             mira.transform.position = centro.transform.position + Vector3.down * 1f;
 
             tomar.acercar = true;
+
+            if (tiempoAcumulado >= tiempoEspera)
+            {
+                audios.PlayOneShot(pisadas);
+                tiempoAcumulado = 0f;
+            }
         }
         else if (Input.GetKey(KeyCode.D) || (Gamepad.current != null && Gamepad.current.leftStick.right.isPressed))
         {
@@ -122,6 +148,12 @@ public class Movimiento : MonoBehaviour
             referencia.transform.position = centro.transform.position + Vector3.right * .5f;
             mira.transform.position = centro.transform.position + Vector3.right * 1f;
             tomar.acercar = false;
+
+            if (tiempoAcumulado >= tiempoEspera)
+            {
+                audios.PlayOneShot(pisadas);
+                tiempoAcumulado = 0f;
+            }
         }
         else
         {
@@ -129,17 +161,19 @@ public class Movimiento : MonoBehaviour
         }
 
 
-        if ((Input.GetKeyDown(KeyCode.Space) || (Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame)) && tomar.Tomable && Tomando == false)
+        if ((Input.GetKeyDown(KeyCode.L) || (Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame)) && tomar.Tomable && Tomando == false)
         {
             Agarrar = true;
+            audios.PlayOneShot(sostener);
         }
-        if ((Input.GetKeyDown(KeyCode.Space) || (Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame)) && Tomando)
+        if ((Input.GetKeyDown(KeyCode.L) || (Gamepad.current != null && Gamepad.current.buttonNorth.wasPressedThisFrame)) && Tomando)
         {
             Agarrar = false;
             triangulo = false;
+            audios.PlayOneShot(soltar);
         }
 
-        if ((Input.GetKeyDown(KeyCode.M) || (Gamepad.current != null && Gamepad.current.buttonWest.wasPressedThisFrame)) && Tomando == false && posibleAtaque)
+        if ((Input.GetKeyDown(KeyCode.K) || (Gamepad.current != null && Gamepad.current.buttonWest.wasPressedThisFrame)) && Tomando == false && posibleAtaque)
         {
             animator.SetBool("Ataque", true);
             posibleAtaque = false;
@@ -161,7 +195,7 @@ public class Movimiento : MonoBehaviour
         RamaGolpeadora.SetActive(true);
         RamaGolpeadora.transform.position = referencia.transform.position;
         RamaGolpeadora.transform.SetParent(Bavi.transform);
-        audio.PlayOneShot(GolpeAire);
+        audios.PlayOneShot(GolpeAire);
         yield return new WaitForSeconds(0.1f);
         RamaGolpeadora.transform.SetParent(null);
         RamaGolpeadora.SetActive(false);

@@ -6,6 +6,7 @@ public class Pared : MonoBehaviour
 {
     public GameObject porton;
     public GameObject accionador;
+    public bool Mimosa = false;
 
     void Start()
     {
@@ -23,7 +24,6 @@ public class Pared : MonoBehaviour
     {
         if (collision.CompareTag("Bavi"))
         {
-            porton.GetComponent<Renderer>().enabled = true;
             porton.GetComponent<Collider2D>().enabled = true;
 
             Rigidbody2D rigidbodyPorton = porton.GetComponent<Rigidbody2D>();
@@ -31,6 +31,7 @@ public class Pared : MonoBehaviour
             {
                 rigidbodyPorton.simulated = true;
             }
+            Mimosa = true;
         }
     }
 }

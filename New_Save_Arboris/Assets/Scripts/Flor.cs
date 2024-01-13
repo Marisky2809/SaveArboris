@@ -6,6 +6,10 @@ public class Flor : MonoBehaviour
 {
     public GameObject florecita;
     public GameObject macetita;
+
+    public GameObject mensaje;
+    public GameObject InMensaje;
+    public bool flor = false;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Verifica si el objeto que colisionó tiene el tag "Maceta"
@@ -20,6 +24,9 @@ public class Flor : MonoBehaviour
             {
                 florecitaCollider.enabled = false;
             }
+            InMensaje = Instantiate(mensaje);
+            flor = true;
+            InMensaje.transform.position = transform.position;
         }
     }
 }

@@ -16,12 +16,13 @@ public class Agua : MonoBehaviour
         aguita = GameObject.Find("AguaCoco");
         chorro = aguita;
     }
-    void OnCollisionEnter2D(Collision2D other)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("Enemigo"))
+        if (collision.CompareTag("Enemigo"))
         {
             //ControladorSonido.Instance.EjecutarSonido(GolpeAgua);
-            golpeado = other.gameObject;
+            golpeado = collision.gameObject;
             Destroy(golpeado);
 
             golpeado = GameObject.Find("Vacio");

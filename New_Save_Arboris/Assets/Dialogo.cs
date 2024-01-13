@@ -22,10 +22,11 @@ public class Dialogo : MonoBehaviour
 
     private int LineadeTexto;
 
+    public bool Hablado = false;
 
     private void Update()
     {
-        if (Rangojugador && (Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame))
+        if (Rangojugador && (Hablado == false || (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.Space)))
         {
             if (!IniciaelDialogo)
             {
@@ -33,12 +34,13 @@ public class Dialogo : MonoBehaviour
             }
             else if (TextodelDialogo.text == LineasdeDialogo[LineadeTexto])
             {
-                SiguienteLinea();
+                    SiguienteLinea();
             }
             else
             {
                 StopAllCoroutines();
                 TextodelDialogo.text = LineasdeDialogo[LineadeTexto];
+                Hablado = true;
             }
         }
     }
@@ -82,8 +84,6 @@ public class Dialogo : MonoBehaviour
     }
 
 
-
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Bavi"))
@@ -100,6 +100,7 @@ public class Dialogo : MonoBehaviour
             Rangojugador = false;
             Debug.Log("Sí funciona");
             MarcadeDialogo.SetActive(false);
+            Destroy(gameObject);
         }
     }
 

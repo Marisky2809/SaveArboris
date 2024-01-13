@@ -5,22 +5,41 @@ using UnityEngine;
 public class SpawnearEnemigos : MonoBehaviour
 {
     [SerializeField] private GameObject Bichitio;
-    [SerializeField] private float tiempodesalida = 3.5f;
+    [SerializeField] private float tiempodesalida = 7.5f;
+    public bool Piedra;
 
     public GameObject hormiguero;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Piedra")) { 
+            Piedra = true;
+            Debug.Log(Piedra);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Piedra"))
+        {
+            Piedra = false;
+            Debug.Log(Piedra);
+        }
+    }
     private void Start()
     {
         StartCoroutine(SpawnerEnemigo(tiempodesalida, Bichitio));
+        Piedra = true;
     }
 
     private IEnumerator SpawnerEnemigo(float Intervalo, GameObject Enemigo)
     {
         yield return new WaitForSeconds(Intervalo);
-
-        // Obtén la posición del objeto actual
-        Vector3 spawnPosition = hormiguero.transform.position;
-        // Crea el NuevoEnemigo en la posición del objeto actual
-        GameObject NuevoEnemigo = Instantiate(Enemigo, spawnPosition, Quaternion.identity);
+        Debug.Log("Pasó Tiempo");
+        if (Piedra == false)
+        {
+            Vector3 spawnPosition = hormiguero.transform.position;
+            GameObject NuevoEnemigo = Instantiate(Enemigo, spawnPosition, Quaternion.identity);
+        }
         StartCoroutine(SpawnerEnemigo(Intervalo, Enemigo));
     }
 }

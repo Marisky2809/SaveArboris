@@ -12,6 +12,8 @@ public class Vidas : MonoBehaviour
     public GameObject enemigo;
     public GameObject Bavi;
 
+    public int PETs = 0;
+
     public GameObject comida;
 
     public Vector3 chingadazo;
@@ -19,8 +21,14 @@ public class Vidas : MonoBehaviour
     public float velocidadMovimiento = 7.0f;
     public Movimiento BaviM;
 
+    public AudioSource audios;
+
+    public AudioClip golpe;
+    public AudioClip comer;
+    public AudioClip recoger;
     private void Start()
     {
+        audios = GetComponent<AudioSource>();
         hud.DesactivarVidas(2);
         hud.DesactivarVidas(4);
         hud.DesactivarVidas(3);
@@ -38,6 +46,7 @@ public class Vidas : MonoBehaviour
                 vulnerable = false;
                 chingadazo = enemigo.transform.position;
 
+                audios.PlayOneShot(golpe);
                 StartCoroutine(chingadazoTime());
             }
             if (BaviM.Tomando)
@@ -54,8 +63,17 @@ public class Vidas : MonoBehaviour
                 vidas = limite;
             }
             hud.ActivarVidas(vidas-1);
+            audios.PlayOneShot(comer);
             comida = collision.collider.gameObject;
             Destroy(comida);
+        }
+        if (collision.collider.CompareTag("Botella"))
+        {
+            PETs ++;
+            comida = collision.collider.gameObject;
+            Destroy(comida);
+            Debug.Log(PETs);
+            audios.PlayOneShot(recoger);
         }
     }
 

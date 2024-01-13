@@ -73,7 +73,7 @@ public class Coco : MonoBehaviour
                 }
             }
         }
-        if ((Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame) || Input.GetKey(KeyCode.B) && posibleDisparo)
+        if ((Gamepad.current != null && Gamepad.current.buttonSouth.wasPressedThisFrame) || Input.GetKey(KeyCode.J) && posibleDisparo)
         {   
             chorro = Instantiate(agua);
             chorro.transform.position = coco.transform.position - (Disparo/1.5f);

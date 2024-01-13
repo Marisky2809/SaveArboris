@@ -11,6 +11,7 @@ public class Tomarcosas : MonoBehaviour
     public bool acercar = true;
     public bool Coco = false;
     public bool Elotito = false;
+    public bool Maceta = false;
 
     public GameObject Florecita;
 
@@ -58,6 +59,7 @@ public class Tomarcosas : MonoBehaviour
             if (sujetable.tag.Equals("Maceta"))
             {
                 sujetable.transform.position += Vector3.up * 0.1f;
+                Maceta = true;
             }
             if (acercar)
             {    
@@ -98,7 +100,7 @@ public class Tomarcosas : MonoBehaviour
             Tomable = false;
             Coco = false;
             Elotito = false;
-            Debug.Log("Intomable");
+            Maceta = false;
         }
     }
 }
