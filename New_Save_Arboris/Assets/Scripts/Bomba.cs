@@ -18,7 +18,7 @@ public class Bomba : MonoBehaviour
             golpeado = GameObject.Find("Vacio");
         }
 
-        if (other.gameObject.CompareTag("Enemigo"))
+        if (other.gameObject.CompareTag("Enemigo") || other.gameObject.CompareTag("RompePiedra"))
         {
             ControladorSonido.Instance.EjecutarSonido(GolpeEnemigo);
             golpeado = other.gameObject;

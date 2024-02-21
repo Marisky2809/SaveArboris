@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Vidas : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Vidas : MonoBehaviour
     public AudioClip golpe;
     public AudioClip comer;
     public AudioClip recoger;
+    public AudioClip morir;
     private void Start()
     {
         audios = GetComponent<AudioSource>();
@@ -35,7 +37,7 @@ public class Vidas : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Enemigo"))
+        if (collision.collider.CompareTag("Enemigo") || collision.collider.CompareTag("Amenaza"))
         {
             if (vulnerable)
             {
@@ -92,5 +94,14 @@ public class Vidas : MonoBehaviour
         movible = true;
         yield return new WaitForSeconds(0.4f);
         vulnerable = true;
+    }
+
+    private void Update()
+    {
+        if (vidas < 1)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            ControladorSonido.Instance.EjecutarSonido(morir);
+        }
     }
 }

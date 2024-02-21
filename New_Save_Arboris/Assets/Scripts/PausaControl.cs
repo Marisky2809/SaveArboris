@@ -53,6 +53,6 @@ public class PausaControl : MonoBehaviour
 
     public void Salir()
     {
-        SceneManager.LoadScene("MenuInicial");
+        Application.Quit();
     }
 }
