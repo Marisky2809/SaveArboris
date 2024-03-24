@@ -21,6 +21,9 @@ public class Coco : MonoBehaviour
     public Animator Coquito;
 
     public bool solito = false;
+
+    public AudioSource audios;
+    public AudioClip chorroAgua;
     void Start()
     {
         Disparo = (BaviM.centro.transform.position - BaviM.mira.transform.position);
@@ -77,6 +80,7 @@ public class Coco : MonoBehaviour
         {   
             chorro = Instantiate(agua);
             chorro.transform.position = coco.transform.position - (Disparo/1.5f);
+            audios.PlayOneShot(chorroAgua);
             Coquito.SetBool("Disparo", true);
             StartCoroutine(DesactivarAnimacion());
             StartCoroutine(Disparando());
@@ -85,27 +89,12 @@ public class Coco : MonoBehaviour
         {
             chorro.transform.position += Disparo * Time.deltaTime * -9.0f;
         }
-
-        if (solito && posibleDisparo)
-        {
-            StartCoroutine(DisparoSolito());
-        }
     }
     IEnumerator Disparando()
     {
         posibleDisparo = false;
         yield return new WaitForSeconds(0.35f);
-        chorro.SetActive(false);
-        posibleDisparo = true;
-    }
-    IEnumerator DisparoSolito()
-    {
-        posibleDisparo = false;
-        chorro = Instantiate(agua);
-        chorro.transform.position = coco.transform.position - (Disparo / 1.5f);
-        StartCoroutine(Disparando());
-        chorro.transform.position += Disparo * Time.deltaTime * -9.0f;
-        yield return new WaitForSeconds(1);
+        Destroy(chorro);
         posibleDisparo = true;
     }
 

@@ -120,7 +120,7 @@ public class Elote : MonoBehaviour
     }
     IEnumerator Recargar()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         posibleBomba = true;
         Debug.Log("Recargó");
     }
